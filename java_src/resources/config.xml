@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<system xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://24.19.117.165/xml/config"
+ id="0" name="PopulationModel" type="Data" 
+ timeSteps="1000">
+ 	<stock id="S0.1" name="Population" units="People" cur_level="1000" />
+    <flow id="F0.1" name="BirthFlow" src_id="PotentialPeople" sink_id="Population" control_name="BirthFlowValve" />
+    <flow id="F0.2" name="DeathFlow" src_id="Population" sink_id="Cemetary" control_name="DeathFlowValve" />
+    <control id="C0.1" name="FertilityRateDecrement" function="{Population},&gt;,{ThreshFertility},0.99,1" type="conditional"/>
+    <control id="C0.2" name="FertilityRate" function="{FertilityRate} * {FertilityRateDecrement}" type="recursive" initialvalue="0.40" />
+    <control id="C0.3" name="Females" function="{Population} * {FemaleFraction}" type="function"/>
+    <control id="C0.4" name="FemaleFraction" function="0.5" type="constant"	initialvalue="0.5" />
+    <control id="C0.5" name="MatureFemales"	function="{Females} * {FractionOfFemaleMature}" type="function"></control>
+    <control id="C0.6" name="FractionOfFemaleMature" function="0.353" type="constant" initialvalue="0.353" />
+    <control id="C0.8" name="MortalityRate" function="{MortalityRate} * {MortalityRateIncrease}" type="recursive" initialvalue="0.025" />
+    <control id="C0.9" name="MortalityRateIncrease"	function="{Population},&gt;,{ThreshMortality},1.01,1" type="conditional"/>
+    <control id="C0.10" name="DeathFlowValve"	function="{Population} * {MortalityRate}" type="function"/>
+    <control id="C0.7" name="BirthFlowValve"	function="{FertilityRate} * {MatureFemales}" type="function"/>
+    <control id="C0.12" name="ThreshMortality" function="100000" type="constant"	initialvalue="100000" />
+    <control id="C0.11" name="ThreshFertility" function="100000" type="constant"	initialvalue="100000" />
+    <cloud id="C0.1.1" units="people" name="PotentialPeople" />
+    <cloud id="C0.1.2" units="people" name="Cemetary"  />
+</system>

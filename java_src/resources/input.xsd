@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://24.19.117.165/xml/input"
+  xmlns:sc="http://24.19.117.165/xml/input"
+  elementFormDefault="qualified">
+
+<xsd:annotation>
+	<xsd:documentation>
+	  This XMLS schema is used to describe input to a data driven model in the CAES-Simulator
+	  application.  This will also serve as the schema for exported output to initiate a model
+	  with values based on an output.  This will allow a user to run a simulation for a while
+	  and then allow the user to start the model from where it left off.
+	  Author: Kevin Anderson (k3a@uw.edu)
+	</xsd:documentation>
+</xsd:annotation>  
+
+  <!-- ALL ELEMENTS EXIST UNDER THE ROOT OF AN INPUT SET -->  
+  <xsd:element name="inputs" type="sc:inputSet" />
+  
+  <!-- A SYSTEM HAS SOME COMPONENTS AND A FEW ATTRIBUTES -->
+  <xsd:complexType name="inputSet">
+  	<xsd:choice minOccurs="0" maxOccurs="unbounded">
+  		<xsd:element name="timestep" type="sc:step" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:choice>
+    <xsd:attribute name="id"           type="xsd:string" use="required" />
+    <xsd:attribute name="name"         type="xsd:string" use="required" />
+  </xsd:complexType>       
+
+  <xsd:complexType name="step">
+  	<xsd:choice minOccurs="0" maxOccurs="unbounded">
+  		<xsd:element name="stock" type="sc:stockInput" minOccurs="0" maxOccurs="unbounded" />
+  		<xsd:element name="flow" type="sc:flowInput" minOccurs="0" maxOccurs="unbounded" />
+  		<xsd:element name="control" type="sc:controlInput" minOccurs="0" maxOccurs="unbounded" />
+  	</xsd:choice>
+  	<xsd:attribute name="stepValue" type="xsd:integer" use="required" />
+  		
+  	
+  </xsd:complexType>
+    
+  <!-- DEFINITION FOR A STOCK -->
+  <xsd:complexType name="stockInput">
+  	<xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+    <xsd:attribute name="type" type="xsd:string" use="required" />
+  	<xsd:attribute name="value" type="xsd:string" use="required" />
+  </xsd:complexType>
+
+  <!-- DEFINITION FOR A FLOW -->
+  <xsd:complexType name="flowInput">
+  	<xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+    <xsd:attribute name="type" type="xsd:string" use="required" />
+  	<xsd:attribute name="value" type="xsd:string" use="required" />
+  </xsd:complexType>
+
+  <!-- DEFINITION FOR A CONTROL -->
+  <xsd:complexType name="controlInput">
+  	<xsd:attribute name="id" type="xsd:string" use="required" />
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="type" type="xsd:string" use="required" />
+  	<xsd:attribute name="value" type="xsd:string" use="required" />
+  </xsd:complexType>
+</xsd:schema>
